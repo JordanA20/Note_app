@@ -1,0 +1,40 @@
+<%- include('partes/header'); %>
+    <section>
+      <div class="items">
+        <% for(let i=0; i < note.length; i++) { %>
+          <div class="<%= note[i].color %>">
+            <div class="items-note note" data-id="<%= note[i]._id %>" data-title="<%= note[i].title %>" 
+                 data-content="<%= note[i].content %>" data-type="<%= note[i].type %>" 
+                 data-color="<%= note[i].color %>" data-checks="<%= note[i].checks %>">
+            </div>
+            <div class="items-contains note">
+              <div class="items-booton"></div>
+              <h3 class="note-title"> <%= note[i].title %> </h3>
+              <% cont = note[i].content.split('\n'); %>
+              <%  for(let x=0; x < cont.length ; x++) { 
+                    if(note[i].type == 'task' && !(cont[x] == '')) { %>
+                      <div class="items-task">
+                        <input class="items-checkbox" type="checkbox"
+                      <%  note[i].checks.forEach(data =>{
+                            if(data == x) { %>
+                              checked
+                      <%  } }); %>
+                        >
+                        <p> <%= cont[x]; %> </>
+                      </div>
+              <%    } else{ %>
+              <%=     cont[x]; %> <br>
+              <%    }
+                  } %>
+            </div>
+          </div>
+        <% } %>
+        <button class="add-note">+</button>
+      </div>
+      <%- include('modals/note.ejs') %>
+    </section>
+    
+    <script src="js/proces.js"></script>
+  </body>
+</html>
+
