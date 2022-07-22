@@ -90,7 +90,6 @@ contOpt.addEventListener('click', e => {
   let x = e.target;
 
   if(x.id == 'bgColor') { // Mostar y desaparecer la lista de colores.
-    // document.querySelector('#list-color').classList.toggle('visible');
     if(document.querySelector('#list-color').style.display == 'none')
       document.querySelector('#list-color').style.display = 'flex';
     else if(document.querySelector('#list-color').style.display == 'flex')
