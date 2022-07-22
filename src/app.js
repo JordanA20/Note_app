@@ -24,7 +24,6 @@ app.use(express.urlencoded({extended: false})) //Para interpretar los datos que 
 // rutas
 app.use('/', indexRoutes);
 
-
 //Inicialización del servidor
 app.listen(app.get('port'), () => {
     console.log(`server on port ${app.get('port')}`);
