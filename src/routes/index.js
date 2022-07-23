@@ -39,11 +39,11 @@ router.post('/add', async (req, res, next) => {
   // Se recibe del formulario de actualización los registros actualizados para llevarlo a la BD.  
 router.post('/update/:id', async (req, res, next) => {
     const { id } = req.params;
-    await Note.update({_id: id}, req.body);
+    await Note.updateOne({_id: id}, req.body);
 
     if(req.body.checks == undefined){
-      console.log(req.body.checks);
-      await Note.update({_id: id}, {'checks': []});
+      console.log(req.body);
+      await Note.updateOne({_id: id}, {'checks': []});
     }
       
     res.redirect('/');

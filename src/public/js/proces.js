@@ -16,7 +16,8 @@ items.addEventListener('click', e => {
     SetNote(x);
 
     if(x.dataset.type == 'task') {
-      checks = x.dataset.checks.split(',');
+      if(x.dataset.checks.length > 0)
+        checks = x.dataset.checks.split(',');
       ChangeToTask();
     }
 
@@ -30,16 +31,17 @@ contMdl.addEventListener('click', e => {
   let form = document.querySelector('#noteForm');
 
   if(x.id == 'close' || x.id == 'noteForm') {
-    if(document.querySelector('#noteId').value == '') { // Guardar no si tiene contenido.
+    if(document.querySelector('#noteId').value == '') { // Guardar nueva nota o tareas si no estan vacias.
       if(!(document.querySelector('#noteTitle').value == ''
        && document.querySelector('#noteContent').value == '')) // Si la nota tiene contenido cambia el acction del form para guardarla.
         form.action = '/add';
       else // Si esta vacia vulve el metodo get para regresar a inicio sin guardar la nota
-      form.method = 'get'
+        form.method = 'get'
     } else // Actualizar nota.
       form.action = `/update/${(document.querySelector('#noteId').value)}`;
     
-    ChangeToNote();
+    if(document.querySelector('.taskContent').children.length > 0)
+      ChangeToNote();
     if(x.id == 'noteForm') // Enviar el formulario si se sale sin utilizar el boton del formulario.
       form.requestSubmit();
       
