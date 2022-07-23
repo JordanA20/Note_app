@@ -47,8 +47,12 @@ contMdl.addEventListener('click', e => {
       
     contMdl.style.display = 'none';
   }
-  else if(x.classList.contains('task-checkbox'))
-    SetChecks(null);
+  else if(x.classList.contains('task-checkbox')){
+    if(x.parentElement.children[1].textContent.length > 0)
+      SetChecks(null);
+    else
+      DeleteTask(x.parentElement.children[2]);
+  }
   else if(x.id == 'newTask' || x.id == 'lblNewTask')
     AddTask('');
   else if(x.classList.contains('task-delete'))

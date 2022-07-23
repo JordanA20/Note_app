@@ -4,7 +4,8 @@ const path = require('path');
 const app = express();
 
 //conexión a la BD
-mongoose.connect('mongodb+srv://jrdn:ZOaWWAVXjq6cqZRJ@cluster0.opj2e.mongodb.net/DB-notes?retryWrites=true&w=majority') // DB-note vendría siendo el nombre de la base de datos, para mongoose se puede crear desde código
+mongoose.connect('mongodb+srv://jrdn:ZOaWWAVXjq6cqZRJ@cluster0.opj2e.mongodb.net/DB-notes?retryWrites=true&w=majority', 
+                {useNewUrlParser: true}) // DB-note vendría siendo el nombre de la base de datos, para mongoose se puede crear desde código
   .then(db => console.log('DB conectado'))
   .catch(err => console.log(err));
 

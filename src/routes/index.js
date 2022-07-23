@@ -41,10 +41,8 @@ router.post('/update/:id', async (req, res, next) => {
     const { id } = req.params;
     await Note.updateOne({_id: id}, req.body);
 
-    if(req.body.checks == undefined){
-      console.log(req.body);
+    if(req.body.checks == undefined)
       await Note.updateOne({_id: id}, {'checks': []});
-    }
       
     res.redirect('/');
 });
