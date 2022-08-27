@@ -329,6 +329,30 @@ a:visited{ color: #ffffff } */
 }
 
 
+/* Media querry */
+@media screen and (max-width: 520px) {
+  .items{
+    width: 100%;
+    grid-template-columns: repeat(auto-fill, 175px);
+    gap: 1rem 1rem;
+  }
+
+  .items-note{ min-width: 142px; }
+
+  .items-booton{ width: 175px; }
+
+  .container{ z-index: 100; }
+
+  #noteTitle, #noteTask, #noteContent, .cont-options{ width: 90%; }
+
+  #noteTask, #noteContent{ min-height: 83.5%; }
+
+  #bgColor{ margin-left: -0.7rem; }
+
+  #chgTask{ margin: 0 2rem 0 .5rem; }
+}
+
+
 /* Backgrounds */
   /* Dark */
   .dark .note{
