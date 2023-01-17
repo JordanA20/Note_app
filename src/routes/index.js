@@ -4,20 +4,61 @@ const Note = require('../models/notes'); //conf para el enlance donde se encuent
 
 // Es para la Página principal donde se despliega el listado de todos los registros
 router.get('/', async (req, res) => {
-    const note = await Note.find();
-    let cont;
-    res.render('index', {
-      note,
-      cont
-    });
+    const note = [];
+    res.render('index', { note });
 });
 
-// Agregamos a la base de datos cuando en el formulario envia por medio del post información a /add
-router.post('/add', async (req, res, next) => {
-    const note = new Note(req.body);
-    await note.save();
-    x = await note;
+// 
+router.get('/:keyuser', async (req, res) => {
+  try {
+    const { keyuser } = req.params;
+    const note = await Note.find({keyuser});
+    res.render('index', { note });
+  } catch (error) {
+    console.log(error);
     res.redirect('/');
+  }
+});
+
+router.post('/findkey', async (req, res) => {
+  try {
+    const note = await Note.find(req.body);
+    note.length > 0 ? res.send({found: true}) : res.send({found: false});
+  } catch (error) {
+    console.log(error);
+    res.redirect('/');
+  }
+})
+
+router.post('/getkeyusers', async (req, res) => {
+  try {
+    const keys = await Note.find({}, {keyuser: 1, _id:0});
+    res.send(keys);
+  } catch (error) {
+    console.log(error);
+    res.redirect('/');
+  }
+})
+
+// Agregamos a la base de datos cuando en el formulario envia por medio del post información a /add
+router.post('/add:keyuser', async (req, res, next) => {
+  try {
+    const { keyuser } = req.params;
+    const note = new Note({
+      keyuser: keyuser,
+      title: req.body.title,
+      content: req.body.content,
+      type: req.body.type,
+      color: req.body.color,
+      checks: req.body.checks
+    });
+    await note.save();
+    // x = await note;
+    res.redirect(`/${keyuser}`);
+  } catch (error) {
+    console.log(error);
+    res.redirect('/');
+  }
 });
 
 // Actualizamos el estatus de la note que inicialmente está en falso.
@@ -53,5 +94,9 @@ router.get('/delete/:id', async (req, res, next) => {
     await Note.remove({_id: id});
     res.redirect('/');
 });
+
+router.get('/404', (req, res) => {
+  res.render('page404')
+})
   
 module.exports = router;

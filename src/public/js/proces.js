@@ -3,6 +3,68 @@ const contOpt = document.querySelector('.options');
 const items = document.querySelector('.items');
 let checks = [];
 
+
+document.addEventListener('DOMContentLoaded', e => {
+  CheckKeyUser();
+});
+
+const SetKeyUser = (x) => window.localStorage.setItem('keyUser', x);
+
+const GetKeyUser = () => window.localStorage.getItem('keyUser');
+
+// Genera un id aleatorio
+const MakeRandomID = (length, 
+  dict='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789') =>
+   Array.from({length}, _=>dict[~~(Math.random()*dict.length)]).join('');
+
+// 
+const GetParamKey = () =>
+  location.href.substring(location.href.lastIndexOf('/')+1);
+
+// Comprueba si existe una keyUser.
+const CheckKeyUser = () => {
+  let param = GetParamKey();
+  if(GetKeyUser() === null && param != '')
+    location.href = '/';
+  else if(GetKeyUser() != null && param === '')
+    location.href = `/${GetKeyUser()}`;
+  else if(items.childElementCount < 2 && GetParamKey() != '') {
+    if(GetParamKey() === GetKeyUser())
+      window.localStorage.removeItem('keyUser');
+    location.href = '/';
+  }
+}
+
+// 
+const ValidateKeyUser = async () => {
+  try {
+    let newkey = MakeRandomID(30);
+    const res = await fetch('/findkey', {
+        method: 'post',
+        body: {keyuser: newkey}
+    })
+    const response = await res.json();
+    response ? SetKeyUser(newkey) : 
+    await fetch('/getkeyusers', { method: 'post' })
+    .then(res => res.json())
+    .then(response => {
+      let conf = true;
+      do {
+        newkey = MakeRandomID(30);
+
+        for(let i=0; i < response.length; i++){
+        newkey === response[i] ? i = response.length : 
+        i === (response.length - 1) ? conf = false : null
+      }
+      } while (conf);
+      SetKeyUser(newkey)
+    })
+    // return newkey;
+  } catch (error) {
+      alert(error);
+  }
+}
+
 // Mostrar el modal de la nota.
 items.addEventListener('click', e => {
   let x = e.target;
@@ -33,9 +95,10 @@ contMdl.addEventListener('click', e => {
   if(x.id == 'close' || x.id == 'noteForm') {
     if(document.querySelector('#noteId').value == '') { // Guardar nueva nota o tareas si no estan vacias.
       if(!(document.querySelector('#noteTitle').value == ''
-       && document.querySelector('#noteContent').value == '')) // Si la nota tiene contenido cambia el acction del form para guardarla.
-        form.action = '/add';
-      else // Si esta vacia vulve el metodo get para regresar a inicio sin guardar la nota
+       && document.querySelector('#noteContent').value == '')){ // Si la nota tiene contenido cambia el acction del form para guardarla.
+        if(GetKeyUser() === null) ValidateKeyUser();
+        form.action = `/add${GetKeyUser()}`;
+      } else // Si esta vacia vulve el metodo get para regresar a inicio sin guardar la nota
         form.method = 'get'
     } else // Actualizar nota.
       form.action = `/update/${(document.querySelector('#noteId').value)}`;

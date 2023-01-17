@@ -5,6 +5,7 @@ const Schema = mongoose.Schema;
 
 // Esquema de la nota
 const TaskSchema = Schema({ // Se define los campos y el tipo de datos
+  keyuser: String,
   title: String,
   content: String,
   type: { //Este objeto para cuendo se cree una nota tenga un type note.
