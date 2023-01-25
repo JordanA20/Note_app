@@ -23,14 +23,22 @@ const GetParamKey = () =>
 
 // Comprueba si existe una keyUser.
 const CheckKeyUser = () => {
-  let param = GetParamKey();
-  if(GetKeyUser() === null && param != '')
+  const param = GetParamKey()
+  const keyUser = GetKeyUser()
+  console.log(keyUser + ' ' + param)
+  if(keyUser === null && param != ''){
+  console.log(keyUser + ' ' + param)
     location.href = '/';
-  else if(GetKeyUser() != null && param === '')
-    location.href = `/${GetKeyUser()}`;
+  }
+  else if(keyUser != null && (param === null || param === '')){
+  console.log(keyUser + ' ' + param)
+    location.href = `/${keyUser}`;
+  }
   else if(items.childElementCount < 2 && GetParamKey() != '') {
-    if(GetParamKey() === GetKeyUser())
-      window.localStorage.removeItem('keyUser');
+    if(GetParamKey() === keyUser){
+      console.log(param + ' ' + keyUser)
+        window.localStorage.removeItem('keyUser');
+    }
     location.href = '/';
   }
 }
@@ -38,41 +46,30 @@ const CheckKeyUser = () => {
 // 
 const ValidateKeyUser = async () => {
   try {
-    let newkey = MakeRandomID(30);
-    const res = await fetch('/findkey', {
-        method: 'post',
-        body: {keyuser: newkey}
-    })
-    const response = await res.json();
-    response ? SetKeyUser(newkey) : 
-    await fetch('/getkeyusers', { method: 'post' })
-    .then(res => res.json())
-    .then(response => {
-      let conf = true;
+    let conf = true;
+    if(GetKeyUser() === null) {
       do {
         newkey = MakeRandomID(30);
 
-        for(let i=0; i < response.length; i++){
-        newkey === response[i] ? i = response.length : 
-        i === (response.length - 1) ? conf = false : null
-      }
+        const res = await fetch(`/findkey${newkey}`, {
+          method: 'post'
+        })
+        const response = await res.json();
+        conf = response.found
       } while (conf);
       SetKeyUser(newkey)
-    })
-    // return newkey;
-  } catch (error) {
-      alert(error);
-  }
+    }
+  } catch (error) { alert(error); }
 }
 
 // Mostrar el modal de la nota.
-items.addEventListener('click', e => {
+items.addEventListener('click', async e => {
   let x = e.target;
 
   if(!(x.classList.contains('items'))) {
     if(x.parentElement.classList.contains('items-note'))
       x = x.parentElement;
-    else if(x.classList.contains('items-booton'))
+    else if(x.classList.contains('items-bottom'))
       x = x.parentElement.parentElement.children[0];
 
     SetNote(x);
@@ -88,15 +85,16 @@ items.addEventListener('click', e => {
 });
 
 // Guarda o actualiza la nota y hace desaparecer el modal de la nota.
-contMdl.addEventListener('click', e => {
+contMdl.addEventListener('click', async e => {
   let x = e.target;
   let form = document.querySelector('#noteForm');
 
   if(x.id == 'close' || x.id == 'noteForm') {
     if(document.querySelector('#noteId').value == '') { // Guardar nueva nota o tareas si no estan vacias.
       if(!(document.querySelector('#noteTitle').value == ''
-       && document.querySelector('#noteContent').value == '')){ // Si la nota tiene contenido cambia el acction del form para guardarla.
-        if(GetKeyUser() === null) ValidateKeyUser();
+       && document.querySelector('#noteContent').value == '')) { // Si la nota tiene contenido cambia el acction del form para guardarla.
+        e.preventDefault()
+        await ValidateKeyUser()
         form.action = `/add${GetKeyUser()}`;
       } else // Si esta vacia vulve el metodo get para regresar a inicio sin guardar la nota
         form.method = 'get'
@@ -105,7 +103,7 @@ contMdl.addEventListener('click', e => {
     
     if(document.querySelector('.taskContent').children.length > 0)
       ChangeToNote();
-    if(x.id == 'noteForm') // Enviar el formulario si se sale sin utilizar el boton del formulario.
+    if(x.id == 'close' || x.id == 'noteForm') // Enviar el formulario si se sale sin utilizar el boton del formulario.
       form.requestSubmit();
       
     contMdl.style.display = 'none';
@@ -122,7 +120,7 @@ contMdl.addEventListener('click', e => {
     DeleteTask(x);
 });
 
-// Activar el color hover para el div booton del item.
+// Activar el color hover para el div bottom del item.
 items.addEventListener('mouseover', e => {
   let x = e.target;
   let c;
@@ -131,14 +129,14 @@ items.addEventListener('mouseover', e => {
     x.parentElement.children[1].style.backgroundColor = `var(--${c}-hover)`;
     x.parentElement.children[1].children[0].style.backgroundColor = `var(--${c}-hover)`;
   }
-  else if(x.classList.contains('items-booton')) {
+  else if(x.classList.contains('items-bottom')) {
     c = x.parentElement.parentElement.children[0].dataset.color;
     x.parentElement.parentElement.children[1].children[0].style.backgroundColor = `var(--${c}-hover)`;
     x.parentElement.parentElement.children[1].style.backgroundColor = `var(--${c}-hover)`;
   }
 });
 
-// Desactivar el color hover para el div booton del item.
+// Desactivar el color hover para el div bottom del item.
 items.addEventListener('mouseout', e => {
   let x = e.target;
   let c;
@@ -147,7 +145,7 @@ items.addEventListener('mouseout', e => {
     x.parentElement.children[1].style.backgroundColor = `var(--${c})`;
     x.parentElement.children[1].children[0].style.backgroundColor = `var(--${c})`;
   }
-  else if(x.classList.contains('items-booton')) {
+  else if(x.classList.contains('items-bottom')) {
     c = x.parentElement.parentElement.children[0].dataset.color;
     x.parentElement.parentElement.children[1].children[0].style.backgroundColor = `var(--${c})`;
     x.parentElement.parentElement.children[1].style.backgroundColor = `var(--${c})`;
@@ -308,7 +306,7 @@ const AddTask = (d) =>{
   x.lastChild.appendChild(elems);
 }
 
-// Elimina una nueva tarea.
+// Elimina una tarea.
 const DeleteTask = (x) =>{
   let n = x.id.substring(3,4);
   let task = document.querySelector('.taskContent');

@@ -82,7 +82,7 @@ section{
   box-shadow: 7px 7px 7px #010414;
 }
 
-.items-booton{
+.items-bottom{
   width: 200px;
   height: 20px;
   margin: 216px 0 0 -16px;
@@ -138,14 +138,14 @@ section{
 }
 
 #noteTitle{
-  width: 600px;
+  width: 560px;
   padding: .8rem 1rem .3rem 1rem;
   border-radius: 1rem 1rem 0 0;
   font-size: 24px;
 }
 
 #noteContent, #noteTask{
-  width: 600px;
+  width: 560px;
   min-height: 448px;
   padding: .4rem 1rem .5rem 1rem;
   font-size: 16px;
@@ -245,7 +245,7 @@ section{
 }
 
 .cont-options{
-  width: 600px;
+  width: 560px;
   padding: 0 1rem;
   border-radius: 0 0 1rem 1rem;
 }
@@ -259,10 +259,6 @@ section{
   color: #ffffff;
   cursor: pointer;
 }
-/* 
-a{ text-decoration: none; }
-
-a:visited{ color: #ffffff } */
 
 #list-color{
   margin: 0 1rem;
@@ -330,16 +326,16 @@ a:visited{ color: #ffffff } */
 
 
 /* Media querry */
-@media screen and (max-width: 520px) {
+@media screen and (max-width: 600px) {
   .items{
-    width: 100%;
+    width: 98%;
     grid-template-columns: repeat(auto-fill, 175px);
     gap: 1rem 1rem;
   }
 
   .items-note{ min-width: 142px; }
 
-  .items-booton{ width: 175px; }
+  .items-bottom{ width: 175px; }
 
   .container{ z-index: 100; }
 

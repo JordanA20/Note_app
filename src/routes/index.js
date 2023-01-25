@@ -8,6 +8,11 @@ router.get('/', async (req, res) => {
     res.render('index', { note });
 });
 
+router.post('/', async (req, res) => {
+  const note = [];
+  res.render('index', { note });
+});
+
 // 
 router.get('/:keyuser', async (req, res) => {
   try {
@@ -20,20 +25,11 @@ router.get('/:keyuser', async (req, res) => {
   }
 });
 
-router.post('/findkey', async (req, res) => {
+router.post('/findkey:keyuser', async (req, res) => {
   try {
-    const note = await Note.find(req.body);
-    note.length > 0 ? res.send({found: true}) : res.send({found: false});
-  } catch (error) {
-    console.log(error);
-    res.redirect('/');
-  }
-})
-
-router.post('/getkeyusers', async (req, res) => {
-  try {
-    const keys = await Note.find({}, {keyuser: 1, _id:0});
-    res.send(keys);
+    const { keyuser } = req.params;
+    const note = await Note.find({keyuser});
+    note.length === 0 ? res.send({found: false}) : res.send({found: true});
   } catch (error) {
     console.log(error);
     res.redirect('/');
@@ -53,7 +49,6 @@ router.post('/add:keyuser', async (req, res, next) => {
       checks: req.body.checks
     });
     await note.save();
-    // x = await note;
     res.redirect(`/${keyuser}`);
   } catch (error) {
     console.log(error);
