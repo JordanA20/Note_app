@@ -157,19 +157,25 @@ contOpt.addEventListener('click', e => {
   let x = e.target;
 
   if(x.id == 'bgColor') { // Mostar y desaparecer la lista de colores.
-    if(document.querySelector('#list-color').style.display == 'none')
+    if(document.querySelector('#list-color').style.display == 'none'){
       document.querySelector('#list-color').style.display = 'flex';
-    else if(document.querySelector('#list-color').style.display == 'flex')
+      document.querySelector('#bgColor').classList.add('selected')
+    }
+    else if(document.querySelector('#list-color').style.display == 'flex'){
       document.querySelector('#list-color').style.display = 'none';
+      document.querySelector('#bgColor').classList.remove('selected')
+    }
   }
   else if(x.classList.contains('color')) // Envia el color eligido la lista al metodo para cambiar el color.
     ChangeColor(x.id);
   else if(x.id == 'chgTask') { // Cambia el contenido a nota o tareas.
     if(document.querySelector('#noteType').value == 'note') {
       document.querySelector('#noteType').value = 'task';
+      document.querySelector('#chgTask').classList.add('selected')
       ChangeToTask();
     } else {
       document.querySelector('#noteType').value = 'note';
+      document.querySelector('#chgTask').classList.remove('selected')
       ChangeToNote();
     }
   }

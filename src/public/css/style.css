@@ -6,10 +6,10 @@
   --blue: #272747;
 
   /* Note hover */
-  --dark-hover: #2f2f2f;
-  --red-hover: #5f2f2f;
-  --green-hover: #2f4f2f;
-  --blue-hover: #2f2f4f;
+  --dark-hover: #3a3a3a;
+  --red-hover: #6a3a3a;
+  --green-hover: #3a5a3a;
+  --blue-hover: #3a3a5a;
 }
 
 
@@ -164,7 +164,7 @@ section{
 .task{
   width: 95%;
   margin: .1rem 0;
-  padding: .1rem 1rem;
+  padding: .1rem .8rem;
   display: flex;
   align-items: center;
   /* background-color: var(--blue-hover) !important; */
@@ -194,7 +194,7 @@ section{
 }
 
 .task-content, #lblNewTask{
-  min-width: 465px;
+  width: 100%;
   margin: 0 .3rem;
   padding: .5rem .8rem;
 }
@@ -246,7 +246,7 @@ section{
 
 .cont-options{
   width: 560px;
-  padding: 0 1rem;
+  padding: .2rem 1rem;
   border-radius: 0 0 1rem 1rem;
 }
 
@@ -361,7 +361,7 @@ section{
     background-color: var(--dark);
   }
 
-  .dark .items-note:hover, .dark .task-content:hover, .dark .btn-opt:hover,.dark #lblNewTask:hover{
+  .dark .items-note:hover, .dark .task-content:hover, .dark .btn-opt:hover,.dark #lblNewTask:hover, .dark .selected{
     background-color: var(--dark-hover);
   }
 
@@ -376,7 +376,7 @@ section{
     background-color: var(--red);
   }
 
-  .red .items-note:hover, .red .task-content:hover, .red .btn-opt:hover,.red #lblNewTask:hover{
+  .red .items-note:hover, .red .task-content:hover, .red .btn-opt:hover,.red #lblNewTask:hover, .red .selected{
     background-color: var(--red-hover);
   }
 
@@ -391,7 +391,7 @@ section{
     background-color: var(--gren);
   }
 
-  .green .items-note:hover, .green .task-content:hover, .green .btn-opt:hover,.green #lblNewTask:hover{
+  .green .items-note:hover, .green .task-content:hover, .green .btn-opt:hover,.green #lblNewTask:hover, .green .selected{
     background-color: var(--green-hover);
   }
 
@@ -406,6 +406,6 @@ section{
     background-color: var(--blue);
   }
 
-  .blue .items-note:hover, .blue .task-content:hover, .blue .btn-opt:hover,.blue #lblNewTask:hover{
+  .blue .items-note:hover, .blue .task-content:hover, .blue .btn-opt:hover,.blue #lblNewTask:hover, .blue .selected{
     background-color: var(--blue-hover);
   }
