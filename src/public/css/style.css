@@ -16,6 +16,7 @@
 body{
   margin: 0;
   background-color: #070717;
+  color: #fff;
 }
 
 header{
@@ -84,8 +85,8 @@ section{
 
 .items-bottom{
   width: 200px;
-  height: 20px;
-  margin: 216px 0 0 -16px;
+  height: 18px;
+  margin: 220px 0 0 -16px;
   border-radius: 0 0 1rem 1rem;
   position: absolute;
 }
@@ -146,9 +147,10 @@ section{
 
 #noteContent, #noteTask{
   width: 560px;
-  min-height: 448px;
+  height: 500px;
   padding: .4rem 1rem .5rem 1rem;
   font-size: 16px;
+  overflow-y: overlay;  
 }
 
 #noteContent{
@@ -279,8 +281,6 @@ section{
 
 #dark{ background-color: var(--dark) }
 
-/* #light{ background-color: #c7c7c7; } */
-
 #red{ background-color: var(--red) }
 
 #green{ background-color: var(--green) }
@@ -316,13 +316,15 @@ section{
   color: #ffffff;
 }
 
-.oculto{
-  display: none;
-}
 
-.visible{
-  display: flex;
-}
+/* General */
+
+.oculto{ display: none; }
+
+.visible{ display: flex; }
+
+::-webkit-scrollbar { width: 0; }
+
 
 
 /* Media querry */
@@ -341,7 +343,7 @@ section{
 
   #noteTitle, #noteTask, #noteContent, .cont-options{ width: 90%; }
 
-  #noteTask, #noteContent{ min-height: 83.5%; }
+  #noteTask, #noteContent{ height: 85.5vh; }
 
   #bgColor{ margin-left: -0.7rem; }
 
@@ -388,7 +390,7 @@ section{
   }
 
   .green div, .green .btn-opt{
-    background-color: var(--gren);
+    background-color: var(--green);
   }
 
   .green .items-note:hover, .green .task-content:hover, .green .btn-opt:hover,.green #lblNewTask:hover, .green .selected{

@@ -25,20 +25,15 @@ const GetParamKey = () =>
 const CheckKeyUser = () => {
   const param = GetParamKey()
   const keyUser = GetKeyUser()
-  console.log(keyUser + ' ' + param)
   if(keyUser === null && param != ''){
   console.log(keyUser + ' ' + param)
     location.href = '/';
   }
-  else if(keyUser != null && (param === null || param === '')){
-  console.log(keyUser + ' ' + param)
+  else if(keyUser != null && (param === null || param === ''))
     location.href = `/${keyUser}`;
-  }
   else if(items.childElementCount < 2 && GetParamKey() != '') {
-    if(GetParamKey() === keyUser){
-      console.log(param + ' ' + keyUser)
-        window.localStorage.removeItem('keyUser');
-    }
+    if(GetParamKey() === keyUser)
+      window.localStorage.removeItem('keyUser');
     location.href = '/';
   }
 }

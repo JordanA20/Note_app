@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Note = require('../models/notes'); //conf para el enlance donde se encuentra el modelo de datos
 
-// Es para la Página principal donde se despliega el listado de todos los registros
+
 router.get('/', async (req, res) => {
     const note = [];
     res.render('index', { note });
@@ -13,7 +13,6 @@ router.post('/', async (req, res) => {
   res.render('index', { note });
 });
 
-// 
 router.get('/:keyuser', async (req, res) => {
   try {
     const { keyuser } = req.params;
@@ -36,7 +35,6 @@ router.post('/findkey:keyuser', async (req, res) => {
   }
 })
 
-// Agregamos a la base de datos cuando en el formulario envia por medio del post información a /add
 router.post('/add:keyuser', async (req, res, next) => {
   try {
     const { keyuser } = req.params;
@@ -56,7 +54,6 @@ router.post('/add:keyuser', async (req, res, next) => {
   }
 });
 
-// Actualizamos el estatus de la note que inicialmente está en falso.
 // router.get('/turn/:id', async (req, res, next) => {
 //     let { id } = req.params;
 //     const note = await Note.findById(id);
@@ -74,6 +71,7 @@ router.post('/add:keyuser', async (req, res, next) => {
  
   // Se recibe del formulario de actualización los registros actualizados para llevarlo a la BD.  
 router.post('/update/:id', async (req, res, next) => {
+  try {
     const { id } = req.params;
     await Note.updateOne({_id: id}, req.body);
 
@@ -81,13 +79,21 @@ router.post('/update/:id', async (req, res, next) => {
       await Note.updateOne({_id: id}, {'checks': []});
       
     res.redirect('/');
+  } catch (error) {
+    console.log(error);
+    res.redirect('/');
+  }
 });
- 
- // Se elimina un registro por medio de la busqueda del ID utilizando el método GET. 
+
 router.get('/delete/:id', async (req, res, next) => {
+  try {
     let { id } = req.params;
     await Note.remove({_id: id});
     res.redirect('/');
+  } catch (error) {
+    console.log(error);
+    res.redirect('/');
+  }
 });
 
 router.get('/404', (req, res) => {
