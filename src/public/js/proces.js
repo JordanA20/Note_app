@@ -14,7 +14,7 @@ const GetKeyUser = () => window.localStorage.getItem('keyUser');
 
 // Genera un id aleatorio
 const MakeRandomID = (length, 
-  dict='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789') =>
+  dict='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_') =>
    Array.from({length}, _=>dict[~~(Math.random()*dict.length)]).join('');
 
 // 
@@ -23,18 +23,22 @@ const GetParamKey = () =>
 
 // Comprueba si existe una keyUser.
 const CheckKeyUser = () => {
-  const param = GetParamKey()
   const keyUser = GetKeyUser()
-  if(keyUser === null && param != ''){
-  console.log(keyUser + ' ' + param)
-    location.href = '/';
-  }
-  else if(keyUser != null && (param === null || param === ''))
-    location.href = `/${keyUser}`;
-  else if(items.childElementCount < 2 && GetParamKey() != '') {
-    if(GetParamKey() === keyUser)
-      window.localStorage.removeItem('keyUser');
-    location.href = '/';
+  const param = GetParamKey()
+
+  if (param === '' && keyUser !== null) {
+    if (items.childElementCount === 1) {
+      if (keyUser.length === 30 && keyUser.indexOf(' '))
+        location.href = `/${keyUser}`;
+    }
+  } 
+  else if (param.length > 0) {
+    if (items.childElementCount === 1) {
+      if (keyUser !== null)
+        window.localStorage.removeItem('keyUser');
+      
+      location.href = `/`;
+    }
   }
 }
 
@@ -94,7 +98,7 @@ contMdl.addEventListener('click', async e => {
       } else // Si esta vacia vulve el metodo get para regresar a inicio sin guardar la nota
         form.method = 'get'
     } else // Actualizar nota.
-      form.action = `/update/${(document.querySelector('#noteId').value)}`;
+      form.action = `/update/${(document.querySelector('#noteId').value)}-${GetKeyUser()}`;
     
     if(document.querySelector('.taskContent').children.length > 0)
       ChangeToNote();
@@ -177,7 +181,7 @@ contOpt.addEventListener('click', e => {
   else if(x.id == 'delete') { // Eliminar la nota seleccionada.
     if(!(document.querySelector('#noteId').value == '')) {
       if(window.confirm('¿Desea eliminar la nota?'))
-        window.location.href = `/delete/${document.querySelector('#noteId').value}`;
+        window.location.href = `/delete/${document.querySelector('#noteId').value}-${GetKeyUser()}`;
     }
   }
 });

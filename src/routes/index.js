@@ -2,14 +2,13 @@ const express = require('express');
 const router = express.Router();
 const Note = require('../models/notes'); //conf para el enlance donde se encuentra el modelo de datos
 
+let note = [];
 
 router.get('/', async (req, res) => {
-    const note = [];
     res.render('index', { note });
 });
 
 router.post('/', async (req, res) => {
-  const note = [];
   res.render('index', { note });
 });
 
@@ -17,6 +16,7 @@ router.get('/:keyuser', async (req, res) => {
   try {
     const { keyuser } = req.params;
     const note = await Note.find({keyuser});
+
     res.render('index', { note });
   } catch (error) {
     console.log(error);
@@ -70,26 +70,26 @@ router.post('/add:keyuser', async (req, res, next) => {
 // });
  
   // Se recibe del formulario de actualización los registros actualizados para llevarlo a la BD.  
-router.post('/update/:id', async (req, res, next) => {
+router.post('/update/:id-:keyuser', async (req, res, next) => {
   try {
-    const { id } = req.params;
+    const { id, keyuser } = req.params;
     await Note.updateOne({_id: id}, req.body);
 
     if(req.body.checks == undefined)
       await Note.updateOne({_id: id}, {'checks': []});
       
-    res.redirect('/');
+    res.redirect(`/${keyuser}`);
   } catch (error) {
     console.log(error);
     res.redirect('/');
   }
 });
 
-router.get('/delete/:id', async (req, res, next) => {
+router.get('/delete/:id-:keyuser', async (req, res, next) => {
   try {
-    let { id } = req.params;
-    await Note.remove({_id: id});
-    res.redirect('/');
+    let { id, keyuser } = req.params;
+    await Note.deleteOne({_id: id});
+    res.redirect(`/${keyuser}`);
   } catch (error) {
     console.log(error);
     res.redirect('/');

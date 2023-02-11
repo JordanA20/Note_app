@@ -138,16 +138,20 @@ section{
   align-items: center;
 }
 
+#noteTitle, #noteContent, #noteTask, .cont-options{
+  max-width: 560px;
+  width: 75%;
+  min-width: 505px;
+}
+
 #noteTitle{
-  width: 560px;
   padding: .8rem 1rem .3rem 1rem;
   border-radius: 1rem 1rem 0 0;
   font-size: 24px;
 }
 
 #noteContent, #noteTask{
-  width: 560px;
-  height: 500px;
+  height: 71vh;
   padding: .4rem 1rem .5rem 1rem;
   font-size: 16px;
   overflow-y: overlay;  
@@ -169,7 +173,6 @@ section{
   padding: .1rem .8rem;
   display: flex;
   align-items: center;
-  /* background-color: var(--blue-hover) !important; */
 }
 
 .taskContent{
@@ -247,7 +250,6 @@ section{
 }
 
 .cont-options{
-  width: 560px;
   padding: .2rem 1rem;
   border-radius: 0 0 1rem 1rem;
 }
@@ -328,7 +330,7 @@ section{
 
 
 /* Media querry */
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 560px) {
   .items{
     width: 98%;
     grid-template-columns: repeat(auto-fill, 175px);
@@ -341,7 +343,10 @@ section{
 
   .container{ z-index: 100; }
 
-  #noteTitle, #noteTask, #noteContent, .cont-options{ width: 90%; }
+  #noteTitle, #noteTask, #noteContent, .cont-options{ 
+    width: 90%;
+    min-width: 0;
+  }
 
   #noteTask, #noteContent{ height: 85.5vh; }
 
