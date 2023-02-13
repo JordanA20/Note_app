@@ -176,6 +176,7 @@ contOpt.addEventListener('click', e => {
       document.querySelector('#noteType').value = 'note';
       document.querySelector('#chgTask').classList.remove('selected')
       ChangeToNote();
+      checks = []
     }
   }
   else if(x.id == 'delete') { // Eliminar la nota seleccionada.
@@ -259,7 +260,7 @@ const ChangeToNote = () =>{
   let x = document.querySelector('.taskContent').children;
   let cnt = document.querySelector('#noteContent');
   let c = '';
-  checks = [];
+  // checks = [];
 
   Object.values(x).forEach(data => {
     c = c + data.children[1].textContent + '\n';
@@ -326,33 +327,24 @@ const SetChecks = (x) =>{
   let cBox = document.querySelectorAll('.task-checkbox');
   let j = 0;
 
-  checks = [];
+  checks = []
   
-  cBox.forEach(e =>{
-    if(e.checked == true)
-    checks[checks.length] = e.value;
+  cBox.forEach(e => {
+    if(e.checked === true)
+    checks[checks.length] = parseInt(e.value);
   });
   
-  if(!(x == null)){
-    for (let i = 0; i < checks.length; i++) {
-      if (checks[i] == x){
-        j = i;
-        break;
-      }
-      else if((j == 0 && (checks[i] > x) || (i + 1) == checks.length))
-        j = i;
-    }
+  if(!(x === null)) {
 
-    for (let i = x; i < cBox.length; i++) {
-      if(cBox[i].checked == true){
-        checks[j] = cBox[i].value - 1;
-        j += 1;
-      }
-      else if(checks[j] == (cBox[i].value - 1))
-        j += 1;
+    j = checks.findIndex(index => {
+      return index === x || index > x
+    })
 
-      if ((i + 1) == cBox.length)
-        checks.length = j;
+    if(j !== -1) {
+      checks = checks.map(index => {
+        if(index > j) return index -1
+        else return index
+      })
     }
   }
 }
